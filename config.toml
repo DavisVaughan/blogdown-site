@@ -8,6 +8,7 @@ disqusShortname = "datainsights"
 googleAnalytics = "UA-99003915-1"
 
 [params]
+    
     # Sets the meta tag description, usually reserved for the main page
     description          = "Data Insights. Blog powered by Hugo and blogdown."
     
