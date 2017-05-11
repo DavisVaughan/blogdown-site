@@ -1,0 +1,163 @@
+---
+title: Amazon RDS + R
+author: ~
+date: '2017-05-10'
+slug: 'rds-and-r'
+categories: ["R", "AWS"]
+tags: ["DBI", "MySQL", "dplyr", "AWS"]
+description: "Connect to Amazon's database service from R"
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Intro
+
+Welcome to my first post! To start things off at Data Insights, I'm going to show you how to connect to an AWS RDS instance from R.
+
+For those of you who don't know, RDS is an easy way to create a database in the cloud. In this post, I won't be showing you how to setup an RDS instance, but I will show you how to connect to it if you have one running.
+
+Let's get started.
+
+# Step 1: The one where you got connected
+
+You'll need a few packages to get started. 
+
+* `DBI` and `MySQL` are used to connect to the database, although MySQL is usually called without explicitely loading it (that's just the standard)
+* `tidyquant` is just there to help us download some data to put in and get out of our database
+* `dplyr` will be used to show off an alternate way to query from the database
+
+```{r, message=FALSE}
+library(DBI)
+#library(MySQL)
+library(tidyquant)
+library(dplyr)
+```
+
+Getting connected isn't too hard once you know what you're looking for. Let's go through the arguments to `dbConnect()`, the function from `DBI` that we will be using to connect.
+
+* `drv` - The driver I'll be using is from the `RMySQL` package, an implementation of the general interface provided by `DBI`. I'll leave it to [the experts](https://github.com/rstats-db/DBI) to explain all of this.
+* `username` / `password` - You'll have to have created a user and password on AWS first, but then you can use them here.
+* `host` - The host name is the Endpoint of your RDS server, without the port on the end. I've attached a screenshot to show where to find this. Basically, on the RDS Dashboard Instances page, hit the drop down arrow beside "MySQL" to show the Endpoint.
+
+```{r, echo=FALSE}
+knitr::include_graphics("/img/aws-rds-r/2017-05-10-aws-dashboard.png")
+```
+
+* `port` - The rest of the Endpoint shows the port that you'll need to access your RDS instance through. That goes here.
+* `dbname` - Finally, you'll need the DB Name you used when setting up the instance. This can be found by clicking Instance Actions -> See Details, and then under Configuration Details you'll find DB Name.
+
+Now that you've got all the pieces, throw them together to create a connection the the database.
+
+```{r}
+cn <- dbConnect(drv = RMySQL::MySQL(), 
+                username = "user1", 
+                password = "testpassword", 
+                host = "davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com", 
+                port = 3306, 
+                dbname = "firstdb")
+```
+
+# Step 2: The one where you take it for a test spin
+
+Well, alright...that was...cool? How do we know it's working? Let's get some data to load into the database. We will use some Apple stock data retrieved through `tidyquant`.
+
+```{r}
+aapl <- tq_get("AAPL")
+
+slice(aapl, 1:10)
+``` 
+
+Write the tibble to the database using DBI. 
+
+- Already done, don't run again.
+- User only has SELECT privelages anyways.
+
+```{r}
+#dbWriteTable(cn, "apple", aapl)
+```
+
+Pull it back down using SQL in RMarkdown! 
+
+- Note that dates did get converted to chr.
+- Only pulls first 1000 rows.
+
+```{sql connection=cn}
+SELECT * 
+FROM apple;
+```
+
+Pull it back down using the DBI package in R! 
+
+- Pulls all rows.
+
+```{r}
+x <- dbGetQuery(cn, "SELECT * FROM apple;")
+
+slice(x, 1:10)
+```
+
+Make sure and disconnect so we can try other things.
+
+```{r }
+dbDisconnect(cn)
+```
+
+
+Now, redo the connection but use dplyr!
+
+```{r}
+cn <- src_mysql(user = "user1", 
+                password = "testpassword", 
+                host = "davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com", 
+                port = 3306, 
+                dbname = "firstdb")
+```
+
+Select the apple table from that database. This does not actually pull in the data. Just makes the connection!
+
+```{r}
+apple_table <- tbl(cn, "apple")
+```
+
+We can use almost any dplyr command with this! It queries the database, and does not do the manipulation in R. This is insane.
+
+```{r}
+apple_table %>% select(date, adjusted)
+```
+
+A dplyr `filter()`.
+
+```{r}
+apple_table %>% filter(date < "2008-01-01")
+```
+
+IBM added to the database using `copy_to()`. 
+
+- Dont run this either, already done.
+
+```{r}
+#ibm <- tq_get("IBM")
+
+#copy_to(cn, ibm, temporary = FALSE)
+```
+
+Pull down IBM, then mutate it to add daily returns using `tidyquant`.
+
+```{r}
+ibm_table <- tbl(cn, "ibm")
+real_tibble <- collect(ibm_table)
+real_tibble$date <- as.Date(real_tibble$date)
+
+real_tibble <- real_tibble %>% 
+  tq_mutate(ohlc_fun = Ad, 
+            mutate_fun = periodReturn, 
+            period = "daily")
+```
+
+
+```{r}
+real_tibble
+```
+
