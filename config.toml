@@ -91,6 +91,12 @@ googleAnalytics = "UA-99003915-1"
     url = "/about"
     identifier = "fa fa-user"
     weight = 3
+    
+[[menu.main]]
+    name = "Resume"
+    url = "/resume"
+    identifier = "fa fa-folder-o"
+    weight = 4
 
 # Insert your username and the icon will apear on the page as long as
 # socialAppearAtTop or socialAppearAtBottom is set to true in the params area
