@@ -9,6 +9,10 @@ googleAnalytics = "UA-99003915-1"
 
 [params]
     
+    # Custom favicon param. See layouts/partials/favicon.html for use
+    # Add favicon.png to static/ and it will be copied to public/ on build
+    favicon = "favicon.png"
+    
     # Sets the meta tag description, usually reserved for the main page
     description          = "Data Insights. Blog powered by Hugo and blogdown."
     
