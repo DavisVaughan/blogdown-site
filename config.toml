@@ -1,4 +1,4 @@
-baseurl = "http://boxer-desmond-18441.netlify.com/"
+baseurl = "https://blog.davisvaughan.com/"
 languageCode = "en-us"
 title = "Data Insights"
 theme = "hugo-future-imperfect"
