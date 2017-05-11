@@ -22,8 +22,11 @@ googleAnalytics = ""
     viewMorePostLink     = "/blog/"
 
 # Optional Params
+
+    # Order categories by count?
     categoriesByCount    = true
     
+    # Include an estimate of reading time?
     includeReadingTime   = true
     
     # The set of favicons used are based on the write-up from this link:
@@ -50,7 +53,7 @@ googleAnalytics = ""
 
     paragraph = "A blog for R enthusiasts"
 
-    about     = "Davis here. I'm a Master's student studying Mathematical Finance at the University of North Carolina at Charlotte. I've read and written enough about R that I decided it would be fitting to share some of my own ideas. I'm also the other half of <a href=\"http://www.business-science.io\">Business Science</a>."
+    about     = "Davis here. I'm a Master's student studying Mathematical Finance at the University of North Carolina at Charlotte. I've read and written enough about R that I decided it would be fun to share some of my own ideas. I'm also the other half of Business Science. Click below to learn more."
 
 # This will also appear on the sidebar.
 # A width of less than 100px is recommended

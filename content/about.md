@@ -1,29 +1,25 @@
 +++
-title = "About Hugo"
+title = "About"
 date = "2014-04-09"
 +++
 
-Hugo is a static site engine written in Go.
+## Who am I?
 
+Hi! I'm Davis Vaughan. A Master's student studying Mathematical Finance at the University of North Carolina at Charlotte. I enjoy all things R, and love automating tasks with it. I'm also a coffee enthusiast, as most R users seem to be.
 
-It makes use of a variety of open source projects including:
+## What else?
 
-* [Cobra](https://github.com/spf13/cobra)
-* [Viper](https://github.com/spf13/viper)
-* [J Walter Weatherman](https://github.com/spf13/jWalterWeatherman)
-* [Cast](https://github.com/spf13/cast)
+I'm the other half of [Business Science](http://www.business-science.io/). We develop open source software for financial analysis. Check out the site to learn more, and feel free to contact us if you're interested in our consultant services.
 
-Learn more and contribute on [GitHub](https://github.com/spf13).
+I helped co-author two R packages with [Matt Dancho](https://github.com/mdancho84):
 
-## Setup
+- [tidyquant](https://business-science.github.io/tidyquant/) - Bringing financial analysis to the tidyverse
+- [timekit](https://business-science.github.io/timekit/) - A collection of tools for working with time series 
 
-Some fun facts about [Hugo](http://gohugo.io/):
+I'm also interested in Actuarial Science and Quantitative Finance. I'll be looking for job opportunities post graduation in May 2018.
 
-* Built in [Go](http://golang.org/)
-* Loosely inspired by [Jekyll](http://jekyllrb.com/)
-* Primarily developed by [spf13](http://spf13.com/) on the train while commuting to and from Manhattan.
-* Coded in [Vim](http://vim.org) using [spf13-vim](http://vim.spf13.com/)
+_"Think different."_ - Steve Jobs
 
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/spf13/hugo/issues/new) or [ask me on Twitter](https://twitter.com/spf13).
+## Want to get in touch?
 
-Thanks for reading!
+I'm always up for a conversation about R or Finance. Tweet at me [here](https://twitter.com/dvaughan32) or send me an email at _dvaughan@business-science.io_
