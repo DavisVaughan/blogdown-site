@@ -12,13 +12,12 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 }
 
 /* Davis changed the selector colors. This is comment output! */
-/* Add to main.min.css to make a difference on the live site 
+/* Add to main.min.css to make a difference on the live site */
 .hljs-selector-class,
 .hljs-selector-attr,
 .hljs-selector-tag {
   color: #f8f8f2;
 }
-*/
 
 .hljs,
 .hljs-tag,
