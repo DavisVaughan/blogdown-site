@@ -34,12 +34,12 @@ library(tidyquant)
 library(dplyr)
 # library(dbplyr)</code></pre>
 <p>Getting connected isn’t too hard once you know what you’re looking for.</p>
-<pre class="r"><code>cn &lt;- dbConnect(drv = RMySQL::MySQL(), 
+<pre class="r"><code>cn &lt;- dbConnect(drv      = RMySQL::MySQL(), 
                 username = &quot;user1&quot;, 
                 password = &quot;testpassword&quot;, 
-                host = &quot;davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com&quot;, 
-                port = 3306, 
-                dbname = &quot;firstdb&quot;)</code></pre>
+                host     = &quot;davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com&quot;, 
+                port     = 3306, 
+                dbname   = &quot;firstdb&quot;)</code></pre>
 <p>Let’s go through the arguments to <code>dbConnect()</code>, the function from <code>DBI</code> that we used to connect.</p>
 <ul>
 <li><code>drv</code> - The driver I used is from the <code>RMySQL</code> package, an implementation of the general interface provided by <code>DBI</code>. I’ll leave it to <a href="https://github.com/rstats-db/DBI">the experts</a> to explain all of this.</li>
@@ -61,16 +61,16 @@ slice(aapl, 1:10)</code></pre>
 <pre><code>## # A tibble: 10 x 7
 ##          date  open  high   low close    volume adjusted
 ##        &lt;date&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-##  1 2007-01-03 86.29 86.58 81.90 83.80 309579900 10.85709
-##  2 2007-01-04 84.05 85.95 83.82 85.66 211815100 11.09807
-##  3 2007-01-05 85.77 86.20 84.40 85.05 208685400 11.01904
-##  4 2007-01-08 85.96 86.53 85.28 85.47 199276700 11.07345
-##  5 2007-01-09 86.45 92.98 85.15 92.57 837324600 11.99333
-##  6 2007-01-10 94.75 97.80 93.45 97.00 738220000 12.56728
-##  7 2007-01-11 95.94 96.78 95.10 95.80 360063200 12.41180
-##  8 2007-01-12 94.59 95.06 93.23 94.62 328172600 12.25892
-##  9 2007-01-16 95.68 97.25 95.45 97.10 311019100 12.58023
-## 10 2007-01-17 97.56 97.60 94.82 94.95 411565000 12.30168</code></pre>
+##  1 2007-01-03 86.29 86.58 81.90 83.80 309579900 10.81246
+##  2 2007-01-04 84.05 85.95 83.82 85.66 211815100 11.05245
+##  3 2007-01-05 85.77 86.20 84.40 85.05 208685400 10.97374
+##  4 2007-01-08 85.96 86.53 85.28 85.47 199276700 11.02794
+##  5 2007-01-09 86.45 92.98 85.15 92.57 837324600 11.94403
+##  6 2007-01-10 94.75 97.80 93.45 97.00 738220000 12.51562
+##  7 2007-01-11 95.94 96.78 95.10 95.80 360063200 12.36078
+##  8 2007-01-12 94.59 95.06 93.23 94.62 328172600 12.20853
+##  9 2007-01-16 95.68 97.25 95.45 97.10 311019100 12.52852
+## 10 2007-01-17 97.56 97.60 94.82 94.95 411565000 12.25111</code></pre>
 <p>To write the tibble (data frame) to the database, we will use another function called <code>dbWriteTable()</code>. It’s pretty straightforward. “name” is the name of the table you are creating, and “value” is the data frame you want to write.</p>
 <pre class="r"><code>dbWriteTable(cn, name = &quot;apple&quot;, value = aapl)</code></pre>
 <p>Now the fun part! Let’s use a SQL query to pull it back down with <code>dbGetQuery()</code>. This function is a combination of <code>dbSendQuery()</code>, which returns a result set for your query, and <code>dbFetch()</code> which returns the rows from that result set.</p>
@@ -101,11 +101,11 @@ slice(apple_from_db, 1:10)</code></pre>
 <pre class="r"><code># There is no need for this code anymore!
 dbDisconnect(cn)
 
-cn &lt;- src_mysql(user = &quot;user1&quot;,
+cn &lt;- src_mysql(user     = &quot;user1&quot;,
                 password = &quot;testpassword&quot;,
-                host = &quot;davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com&quot;,
-                port = 3306,
-                dbname = &quot;firstdb&quot;)</code></pre>
+                host     = &quot;davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com&quot;,
+                port     = 3306,
+                dbname   = &quot;firstdb&quot;)</code></pre>
 <p>Select the apple table from the database. <em>This does not actually pull the data into memory</em>. It just makes a connection!</p>
 <pre class="r"><code># With dplyr 0.6.0 we can just use the DBI connection!
 apple_table &lt;- tbl(cn, &quot;apple&quot;)
@@ -115,7 +115,7 @@ apple_table</code></pre>
 <pre><code>## Source:     table&lt;apple&gt; [?? x 8]
 ## Database:   mysql 5.6.27-log [user1@davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com:/firstdb]
 ## 
-## # S3: tbl_dbi
+## # A tibble: ?? x 8
 ##    row_names       date  open  high   low close    volume adjusted
 ##        &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ##  1         1 2007-01-03 86.29 86.58 81.90 83.80 309579900 10.90416
@@ -134,7 +134,7 @@ apple_table</code></pre>
 <pre><code>## Source:     lazy query [?? x 8]
 ## Database:   mysql 5.6.27-log [user1@davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com:/firstdb]
 ## 
-## # S3: tbl_dbi
+## # A tibble: ?? x 8
 ##    row_names       date  open  high   low close    volume adjusted
 ##        &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ##  1       505 2009-01-02 85.88 91.04 85.16 90.75 186503800 11.80851
@@ -163,9 +163,9 @@ real_tibble &lt;- collect(ibm_table) %&gt;%
 
 # Daily return
 real_tibble &lt;- real_tibble %&gt;% 
-  tq_mutate(select = adjusted, 
+  tq_mutate(select     = adjusted, 
             mutate_fun = periodReturn, 
-            period = &quot;daily&quot;)
+            period     = &quot;daily&quot;)
 
 real_tibble</code></pre>
 <pre><code>## # A tibble: 2,542 x 8

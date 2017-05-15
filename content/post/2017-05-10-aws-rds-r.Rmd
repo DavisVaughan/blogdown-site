@@ -43,12 +43,12 @@ library(dplyr)
 Getting connected isn't too hard once you know what you're looking for.
 
 ```{r}
-cn <- dbConnect(drv = RMySQL::MySQL(), 
+cn <- dbConnect(drv      = RMySQL::MySQL(), 
                 username = "user1", 
                 password = "testpassword", 
-                host = "davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com", 
-                port = 3306, 
-                dbname = "firstdb")
+                host     = "davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com", 
+                port     = 3306, 
+                dbname   = "firstdb")
 ```
 
 Let's go through the arguments to `dbConnect()`, the function from `DBI` that we used to connect.
@@ -101,11 +101,11 @@ Before `dplyr` 0.6.0 was announced, you'd have to disconnect, and then reconnect
 # There is no need for this code anymore!
 dbDisconnect(cn)
 
-cn <- src_mysql(user = "user1",
+cn <- src_mysql(user     = "user1",
                 password = "testpassword",
-                host = "davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com",
-                port = 3306,
-                dbname = "firstdb")
+                host     = "davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com",
+                port     = 3306,
+                dbname   = "firstdb")
 ```
 
 Select the apple table from the database. _This does not actually pull the data into memory_. It just makes a connection!
@@ -146,9 +146,9 @@ real_tibble <- collect(ibm_table) %>%
 
 # Daily return
 real_tibble <- real_tibble %>% 
-  tq_mutate(select = adjusted, 
+  tq_mutate(select     = adjusted, 
             mutate_fun = periodReturn, 
-            period = "daily")
+            period     = "daily")
 
 real_tibble
 ```
