@@ -1,6 +1,6 @@
 ---
 title: Amazon RDS + R
-author: ~
+author: Davis Vaughan
 date: '2017-05-10'
 slug: 'rds-and-r'
 categories: ["R", "AWS", "tidyverse"]
@@ -59,18 +59,18 @@ library(dplyr)
 
 slice(aapl, 1:10)</code></pre>
 <pre><code>## # A tibble: 10 x 7
-##          date  open  high   low close    volume adjusted
-##        &lt;date&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-##  1 2007-01-03 86.29 86.58 81.90 83.80 309579900 10.81246
-##  2 2007-01-04 84.05 85.95 83.82 85.66 211815100 11.05245
-##  3 2007-01-05 85.77 86.20 84.40 85.05 208685400 10.97374
-##  4 2007-01-08 85.96 86.53 85.28 85.47 199276700 11.02794
-##  5 2007-01-09 86.45 92.98 85.15 92.57 837324600 11.94403
-##  6 2007-01-10 94.75 97.80 93.45 97.00 738220000 12.51562
-##  7 2007-01-11 95.94 96.78 95.10 95.80 360063200 12.36078
-##  8 2007-01-12 94.59 95.06 93.23 94.62 328172600 12.20853
-##  9 2007-01-16 95.68 97.25 95.45 97.10 311019100 12.52852
-## 10 2007-01-17 97.56 97.60 94.82 94.95 411565000 12.25111</code></pre>
+##          date  open  high   low    close    volume adjusted
+##        &lt;date&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 2007-01-03 86.29 86.58 81.90 83.80000 309579900 11.97143
+##  2 2007-01-04 84.05 85.95 83.82 85.66000 211815100 12.23714
+##  3 2007-01-05 85.77 86.20 84.40 85.04999 208685400 12.15000
+##  4 2007-01-08 85.96 86.53 85.28 85.47000 199276700 12.21000
+##  5 2007-01-09 86.45 92.98 85.15 92.57000 837324600 13.22429
+##  6 2007-01-10 94.75 97.80 93.45 97.00000 738220000 13.85714
+##  7 2007-01-11 95.94 96.78 95.10 95.80000 360063200 13.68572
+##  8 2007-01-12 94.59 95.06 93.23 94.62000 328172600 13.51714
+##  9 2007-01-16 95.68 97.25 95.45 97.10000 311019100 13.87143
+## 10 2007-01-17 97.56 97.60 94.82 94.95000 411565000 13.56428</code></pre>
 <p>To write the tibble (data frame) to the database, we will use another function called <code>dbWriteTable()</code>. It’s pretty straightforward. “name” is the name of the table you are creating, and “value” is the data frame you want to write.</p>
 <pre class="r"><code>dbWriteTable(cn, name = &quot;apple&quot;, value = aapl)</code></pre>
 <p>Now the fun part! Let’s use a SQL query to pull it back down with <code>dbGetQuery()</code>. This function is a combination of <code>dbSendQuery()</code>, which returns a result set for your query, and <code>dbFetch()</code> which returns the rows from that result set.</p>
