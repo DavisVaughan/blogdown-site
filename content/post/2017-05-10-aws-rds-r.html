@@ -59,18 +59,18 @@ library(dplyr)
 
 slice(aapl, 1:10)</code></pre>
 <pre><code>## # A tibble: 10 x 7
-##          date  open  high   low    close    volume adjusted
-##        &lt;date&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-##  1 2007-01-03 86.29 86.58 81.90 83.80000 309579900 11.97143
-##  2 2007-01-04 84.05 85.95 83.82 85.66000 211815100 12.23714
-##  3 2007-01-05 85.77 86.20 84.40 85.04999 208685400 12.15000
-##  4 2007-01-08 85.96 86.53 85.28 85.47000 199276700 12.21000
-##  5 2007-01-09 86.45 92.98 85.15 92.57000 837324600 13.22429
-##  6 2007-01-10 94.75 97.80 93.45 97.00000 738220000 13.85714
-##  7 2007-01-11 95.94 96.78 95.10 95.80000 360063200 13.68572
-##  8 2007-01-12 94.59 95.06 93.23 94.62000 328172600 13.51714
-##  9 2007-01-16 95.68 97.25 95.45 97.10000 311019100 13.87143
-## 10 2007-01-17 97.56 97.60 94.82 94.95000 411565000 13.56428</code></pre>
+##          date   open   high    low    close    volume adjusted
+##        &lt;date&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 2007-01-03 11.134 11.171 10.567 10.81246 309579900 11.97143
+##  2 2007-01-04 10.845 11.090 10.815 11.05245 211815100 12.23714
+##  3 2007-01-05 11.067 11.122 10.890 10.97374 208685400 12.15000
+##  4 2007-01-08 11.091 11.165 11.003 11.02793 199276700 12.21000
+##  5 2007-01-09 11.154 11.997 10.987 11.94403 837324600 13.22429
+##  6 2007-01-10 12.225 12.619 12.058 12.51562 738220000 13.85714
+##  7 2007-01-11 12.379 12.487 12.270 12.36079 360063200 13.68572
+##  8 2007-01-12 12.205 12.265 12.029 12.20853 328172600 13.51714
+##  9 2007-01-16 12.345 12.548 12.316 12.52852 311019100 13.87143
+## 10 2007-01-17 12.588 12.593 12.234 12.25111 411565000 13.56428</code></pre>
 <p>To write the tibble (data frame) to the database, we will use another function called <code>dbWriteTable()</code>. It’s pretty straightforward. “name” is the name of the table you are creating, and “value” is the data frame you want to write.</p>
 <pre class="r"><code>dbWriteTable(cn, name = &quot;apple&quot;, value = aapl)</code></pre>
 <p>Now the fun part! Let’s use a SQL query to pull it back down with <code>dbGetQuery()</code>. This function is a combination of <code>dbSendQuery()</code>, which returns a result set for your query, and <code>dbFetch()</code> which returns the rows from that result set.</p>
@@ -112,10 +112,9 @@ apple_table &lt;- tbl(cn, &quot;apple&quot;)
 
 # By default the first 1000 rows are displayed
 apple_table</code></pre>
-<pre><code>## Source:     table&lt;apple&gt; [?? x 8]
-## Database:   mysql 5.6.27-log [user1@davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com:/firstdb]
-## 
-## # A tibble: ?? x 8
+<pre><code>## # Source:   table&lt;apple&gt; [?? x 8]
+## # Database: mysql 5.6.27-log
+## #   [user1@davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com:/firstdb]
 ##    row_names       date  open  high   low close    volume adjusted
 ##        &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ##  1         1 2007-01-03 86.29 86.58 81.90 83.80 309579900 10.90416
@@ -131,10 +130,9 @@ apple_table</code></pre>
 ## # ... with more rows</code></pre>
 <p>The best part is that we can use almost any dplyr command with this! It queries the database, and does not do the manipulation in R. All of the familiar syntax of dplyr, but with databases. Let’s use <code>filter()</code> to get all of the rows after January 1, 2009.</p>
 <pre class="r"><code>filter(apple_table, date &gt; &quot;2009-01-01&quot;)</code></pre>
-<pre><code>## Source:     lazy query [?? x 8]
-## Database:   mysql 5.6.27-log [user1@davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com:/firstdb]
-## 
-## # A tibble: ?? x 8
+<pre><code>## # Source:   lazy query [?? x 8]
+## # Database: mysql 5.6.27-log
+## #   [user1@davisdbinstance.crarljboc8to.us-west-2.rds.amazonaws.com:/firstdb]
 ##    row_names       date  open  high   low close    volume adjusted
 ##        &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ##  1       505 2009-01-02 85.88 91.04 85.16 90.75 186503800 11.80851
